@@ -16,9 +16,6 @@ public class Location {
     @SerializedName("state")
     @Expose
     private String state;
-    @SerializedName("postcode")
-    @Expose
-    private Integer postcode;
 
     public String getStreet() {
         return street;
@@ -44,17 +41,9 @@ public class Location {
         this.state = state;
     }
 
-    public Integer getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(Integer postcode) {
-        this.postcode = postcode;
-    }
-
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("street", street).append("city", city).append("state", state).append("postcode", postcode).toString();
+        return new ToStringBuilder(this).append("street", street).append("city", city).append("state", state).toString();
     }
 
 }
