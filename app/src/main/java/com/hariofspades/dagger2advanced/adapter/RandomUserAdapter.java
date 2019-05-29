@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hariofspades.dagger2advanced.MainActivity;
 import com.hariofspades.dagger2advanced.R;
 import com.hariofspades.dagger2advanced.model.Result;
 import com.squareup.picasso.Picasso;
@@ -21,13 +20,11 @@ import java.util.List;
 
 public class RandomUserAdapter extends RecyclerView.Adapter<RandomUserAdapter.RandomUserViewHolder> {
 
-    private final Picasso picasso;
     private List<Result> resultList = new ArrayList<>();
 
-
-    public RandomUserAdapter(Picasso picasso) {
-        this.picasso = picasso;
+    public RandomUserAdapter() {
     }
+
 
     @Override
     public RandomUserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -41,7 +38,7 @@ public class RandomUserAdapter extends RecyclerView.Adapter<RandomUserAdapter.Ra
         Result result = resultList.get(position);
         holder.textView.setText(String.format("%s %s", result.getName().getFirst(),
                 result.getName().getLast()));
-        picasso.with(holder.imageView.getContext())
+        Picasso.with(holder.imageView.getContext())
                 .load(result.getPicture().getLarge())
                 .into(holder.imageView);
     }

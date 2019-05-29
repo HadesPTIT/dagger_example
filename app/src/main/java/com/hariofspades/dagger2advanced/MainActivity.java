@@ -10,15 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hariofspades.dagger2advanced.adapter.RandomUserAdapter;
 import com.hariofspades.dagger2advanced.component.DaggerMainActivityComponent;
-import com.hariofspades.dagger2advanced.component.DaggerRandomUserComponent;
 import com.hariofspades.dagger2advanced.component.MainActivityComponent;
 import com.hariofspades.dagger2advanced.component.RandomUserComponent;
 import com.hariofspades.dagger2advanced.interfaces.RandomUsersApi;
 import com.hariofspades.dagger2advanced.model.RandomUsers;
 import com.hariofspades.dagger2advanced.module.ContextModule;
-import com.hariofspades.dagger2advanced.module.MainActivityModule;
 import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -39,12 +36,9 @@ public class MainActivity extends AppCompatActivity {
     Retrofit retrofit;
     RecyclerView recyclerView;
 
-    Picasso picasso;
-
     @Inject
     RandomUsersApi randomUserApi;
 
-    @Inject
     RandomUserAdapter mAdapter;
 
     @Override
@@ -66,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private void afterActivityLevelComponent() {
 
         MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
-                .mainActivityModule(new MainActivityModule(this))
                 .randomUserComponent(App.get(this).getRandomUserComponent())
                 .build();
 
@@ -79,12 +72,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void afterDagger2() {
 
-        RandomUserComponent mComponent = DaggerRandomUserComponent.builder()
-                .contextModule(new ContextModule(this))
-                .build();
+//        RandomUserComponent mComponent = DaggerRandomUserComponent.builder()
+//                .contextModule(new ContextModule(this))
+//                .build();
 
-        picasso = mComponent.getPicasso();
-        randomUserApi = mComponent.getRandomUserService();
+//        randomUserApi = mComponent.getRandomUserService();
 
 
     }
@@ -119,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         OkHttp3Downloader okHttpDownloader = new OkHttp3Downloader(okHttpClient);
 
-        picasso = new Picasso.Builder(this).downloader(okHttpDownloader).build();
-
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl("https://randomuser.me/")
@@ -139,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<RandomUsers> call, @NonNull Response<RandomUsers> response) {
                 if(response.isSuccessful()) {
-                    mAdapter = new RandomUserAdapter(picasso);
+                    mAdapter = new RandomUserAdapter();
                     mAdapter.setItems(response.body().getResults());
                     recyclerView.setAdapter(mAdapter);
                 }

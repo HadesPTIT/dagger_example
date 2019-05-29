@@ -1,13 +1,12 @@
 package com.hariofspades.dagger2advanced.component;
 
 import com.hariofspades.dagger2advanced.MainActivity;
-import com.hariofspades.dagger2advanced.interfaces.MainActivityScope;
-import com.hariofspades.dagger2advanced.module.MainActivityModule;
+import com.hariofspades.dagger2advanced.interfaces.ActivityScope;
 
 import dagger.Component;
 
-@Component(modules = MainActivityModule.class, dependencies = RandomUserComponent.class)
-@MainActivityScope
+@ActivityScope
+@Component(dependencies = RandomUserComponent.class)
 public interface MainActivityComponent {
 
 //    RandomUserAdapter getRandomUserAdapter();
