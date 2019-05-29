@@ -1,1 +1,4 @@
 /build
+.idea/
+.idea/caches
+.idea/modules.xml

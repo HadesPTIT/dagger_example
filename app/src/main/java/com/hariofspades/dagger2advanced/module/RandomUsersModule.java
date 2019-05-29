@@ -2,6 +2,7 @@ package com.hariofspades.dagger2advanced.module;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.hariofspades.dagger2advanced.interfaces.RandomUserApplicationScope;
 import com.hariofspades.dagger2advanced.interfaces.RandomUsersApi;
 
 import dagger.Module;
@@ -21,6 +22,8 @@ public class RandomUsersModule {
         return retrofit.create(RandomUsersApi.class);
     }
 
+    // TODO : Step 6.2 : Add scope for top dependency ( Picasso && Retrofit )
+    @RandomUserApplicationScope
     @Provides
     public Retrofit retrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonConverterFactory, Gson gson) {
         return new Retrofit.Builder()

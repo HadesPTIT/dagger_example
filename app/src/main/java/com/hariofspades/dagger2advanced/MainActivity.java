@@ -1,6 +1,5 @@
 package com.hariofspades.dagger2advanced;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,16 +9,20 @@ import android.support.v7.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hariofspades.dagger2advanced.adapter.RandomUserAdapter;
-import com.hariofspades.dagger2advanced.interfaces.DaggerRandomUserComponent;
-import com.hariofspades.dagger2advanced.interfaces.RandomUserComponent;
+import com.hariofspades.dagger2advanced.component.DaggerMainActivityComponent;
+import com.hariofspades.dagger2advanced.component.DaggerRandomUserComponent;
+import com.hariofspades.dagger2advanced.component.MainActivityComponent;
+import com.hariofspades.dagger2advanced.component.RandomUserComponent;
 import com.hariofspades.dagger2advanced.interfaces.RandomUsersApi;
 import com.hariofspades.dagger2advanced.model.RandomUsers;
 import com.hariofspades.dagger2advanced.module.ContextModule;
+import com.hariofspades.dagger2advanced.module.MainActivityModule;
 import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+
+import javax.inject.Inject;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -35,21 +38,42 @@ public class MainActivity extends AppCompatActivity {
 
     Retrofit retrofit;
     RecyclerView recyclerView;
-    RandomUserAdapter mAdapter;
 
     Picasso picasso;
 
+    @Inject
     RandomUsersApi randomUserApi;
+
+    @Inject
+    RandomUserAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+
 //        beforeDagger2();
-        afterDagger2();
+
+//        afterDagger2();
+
+        afterActivityLevelComponent();
 
         populateUsers();
+
+    }
+
+    private void afterActivityLevelComponent() {
+
+        MainActivityComponent mainActivityComponent = DaggerMainActivityComponent.builder()
+                .mainActivityModule(new MainActivityModule(this))
+                .randomUserComponent(App.get(this).getRandomUserComponent())
+                .build();
+
+//        randomUserApi = mainActivityComponent.getRandomUserService();
+//        mAdapter = mainActivityComponent.getRandomUserAdapter();
+
+        mainActivityComponent.injectMainActivity(this);
 
     }
 

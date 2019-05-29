@@ -2,26 +2,24 @@ package com.hariofspades.dagger2advanced.module;
 
 import android.content.Context;
 
-import com.hariofspades.dagger2advanced.interfaces.ApplicationContext;
 import com.hariofspades.dagger2advanced.interfaces.RandomUserApplicationScope;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class ContextModule {
+public class ActivityModule {
 
-    Context context;
+    private final Context context;
 
-    public ContextModule(Context context) {
+
+    public ActivityModule(Context context) {
         this.context = context;
     }
 
-    @ApplicationContext
     @RandomUserApplicationScope
     @Provides
     public Context context() {
-        return context.getApplicationContext();
+        return context;
     }
-
 }
